@@ -1,0 +1,81 @@
+
+enum Role {
+  ADMIN
+  SECRETARIA
+  FINANCEIRO
+  DIRETOR_GERAL
+}
+
+
+enum TipoEscola {
+  ATL
+  Encino_primario
+  Encino_secundario
+  Ensino_medio
+}
+enum TipoMorada {
+  RESIDENCIAL
+  TEMPORARIA
+}
+
+enum Periodo {
+  MANHA
+  TARDE
+}
+
+enum Sexo {
+  MASCULINO
+  FEMENINO
+}
+
+enum Cargo {
+  MOTORISTA
+  VIGILANTE
+  SECRETARIO
+  FINANCEIRO
+  DIRETOR_GERAL
+}
+
+
+
+enum Tipo {
+  Hiase
+  mini_autocarro
+  autocarro
+  particular
+}
+
+enum StatusVeiculo {
+  Ativo
+  Manutencao
+  Inativo
+}
+
+enum PosseVeiculo {
+  EMPRESA
+  ALUGADO
+}
+
+enum MeioPagamento {
+  Transferencia_Bancaria
+  Transferencia_Express
+  Kwik
+  NaHora_Bai
+}
+
+enum StatusPagamento {
+  Pago
+  Pendente
+  Estornado
+}
+
+enum TipoDono {
+  ALUNO
+  FUNCIONARIO
+  PROPRIETARIO
+}
+
+enum TipoFuncionarioToVeiculo {
+   MOTORISTA
+  VIGILANTE
+}

@@ -1,0 +1,45 @@
+model FuncionarioMorada {
+  id            Int @id @default(autoincrement())
+  funcionarioId Int
+  moradaId      Int
+
+  funcionario Funcionario @relation(fields: [funcionarioId], references: [id])
+  morada      Morada      @relation(fields: [moradaId], references: [id])
+
+  @@unique([funcionarioId, moradaId])
+}
+
+model ProprietarioMorada {
+  id             Int @id @default(autoincrement())
+  proprietarioId Int
+  moradaId       Int
+
+  proprietario Proprietario @relation(fields: [proprietarioId], references: [id])
+  morada       Morada       @relation(fields: [moradaId], references: [id])
+
+  @@unique([proprietarioId, moradaId])
+}
+
+model AlunoMorada {
+  id       Int @id @default(autoincrement())
+  alunoId  Int
+  moradaId Int
+
+  aluno  Aluno  @relation(fields: [alunoId], references: [id])
+  morada Morada @relation(fields: [moradaId], references: [id])
+
+  @@unique([alunoId, moradaId])
+}
+
+model FuncionariosToVeiculos {
+  id                Int                        @id @default(autoincrement())
+  id_funcionario    Int
+  tipo_funcionario  TipoFuncionarioToVeiculo
+  id_veiculo        Int
+
+  funcionario       Funcionario                @relation(fields: [id_funcionario], references: [id])
+  veiculo           Veiculo                    @relation(fields: [id_veiculo], references: [id])
+  @@unique([id_funcionario])
+  @@unique([id_veiculo, tipo_funcionario])
+  @@map("funcionariostoveiculo")
+}
