@@ -1,8 +1,7 @@
 import "dotenv/config"
 import {type Request, type Response} from "express"
 import express from "express"
-import prisma from "./lib/prisma.js";
-import type { PgStatResult } from "./interfaces/interface.js";
+import statusRoute from "./routes/statusRoutes.js"
 
 
 const PORT = process.env.PORT_SERVER || 3000
@@ -10,26 +9,12 @@ const app = express();
 
 
 
+app.use(express.json())
+
+app.use('/status', statusRoute);
 app.get('/', (req:Request, res:Response) => {
   res.send('Hello World!')
 })
-
- app.get('/status', async (req:Request, res:Response)=>{
-
-  try {
-    const result:PgStatResult[] = await prisma.$queryRaw `SELECT count(*) FROM pg_stat_activity WHERE state = 'active';`;
-
-    if (!result || !result[0])
-        return res.status(500).json({error: "Falha  a retornar as instancias no db"})
-    else
-      res.json({
-              "Instancias no banco": Number(result[0].count),
-            });
-  } catch (error) {
-    return res.status(500).json({error: "Falha  na ligacao do banco de dados"})
-  }
-
-  })
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`)
