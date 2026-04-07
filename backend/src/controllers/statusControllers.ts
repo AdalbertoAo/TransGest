@@ -11,7 +11,7 @@ export default async function  getStatus(req:Request, res:Response){
   }
   
     try {
-        const result:PgStatResult[] = await prisma.$queryRaw `SELECT count(*) FROM pg_stat_activity WHERE state = 'active';`;
+      const result:PgStatResult[] = await prisma.$queryRaw `SELECT count(*) FROM pg_stat_activity WHERE state = 'active';`;
     
         if (!result || !result[0])
             database.status = false
@@ -23,11 +23,12 @@ export default async function  getStatus(req:Request, res:Response){
       }
       res.json({
         "database":{
-          "timestamp": database.timestamp,
-          "Status": database.status ? "ok" : "error",
-          "Instancias no banco": database.instancias
+          "timestamp": database.timestamp.toLocaleDateString(),
+          "status": database.status ? "ok" : "error",
+          "instancias no banco": database.instancias
           
         }
         
       })
+      
 }
