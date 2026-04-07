@@ -4,7 +4,6 @@ import express from "express"
 import statusRoute from "./routes/statusRoutes.js"
 
 
-const PORT = process.env.PORT_SERVER || 3000
 const app = express();
 
 
@@ -16,6 +15,4 @@ app.get('/', (req:Request, res:Response) => {
   res.send('Hello World!')
 })
 
-app.listen(PORT, () => {
-  console.log(`Example app listening on port ${PORT}`)
-})
+export default app;
