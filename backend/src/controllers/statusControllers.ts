@@ -1,18 +1,33 @@
 import {type Request, type Response} from "express"
 import prisma from "../lib/prisma.js";
-import type { PgStatResult } from "../interfaces/interface.js";
+import type { PgStatResult, DatabaseStatus} from "../interfaces/interface.js";
+
 
 export default async function  getStatus(req:Request, res:Response){
+  let database:DatabaseStatus = {
+    instancias: 0,
+    status: true,
+    timestamp: new Date()
+  }
+  
     try {
         const result:PgStatResult[] = await prisma.$queryRaw `SELECT count(*) FROM pg_stat_activity WHERE state = 'active';`;
     
         if (!result || !result[0])
-            return res.status(500).json({error: "Falha  a retornar as instancias no db"})
+            database.status = false
         else
-          res.json({
-                  "Instancias no banco": Number(result[0].count),
-                });
+          database.instancias = Number(result[0].count)  
+          database.status = true
       } catch (error) {
-        return res.status(500).json({error: "Falha  na ligacao do banco de dados"})
+        database.status = false
       }
+      res.json({
+        "database":{
+          "timestamp": database.timestamp,
+          "Status": database.status ? "ok" : "error",
+          "Instancias no banco": database.instancias
+          
+        }
+        
+      })
 }
