@@ -1,8 +1,8 @@
 import {expect, test, describe, expectTypeOf} from "vitest"
 import Request from "supertest"
-import app from "../app.js"
-import type { DatabaseStatus, PgStatResult } from "../interfaces/interface.js"
-import prisma from "../lib/prisma.js"
+import app from "../../app.js"
+import type { PgStatResult } from "../../interfaces/interface.js"
+import prisma from "../../lib/prisma.js"
 
 
 
@@ -29,9 +29,9 @@ describe("All tests for endpoint ./status", ()=>{
     
         const response = await Request(app).get("/status");
         const responseBody = response.body
-        console.log(db)
+
         expect(responseBody).toMatchObject(db)
-        console.log(response.body)
+     
     })
     test("if typeof to instancias is BigInt", async ()=>{
         
