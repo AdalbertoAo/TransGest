@@ -1,7 +1,7 @@
 import "dotenv/config"
 import {type Request, type Response} from "express"
 import express from "express"
-import statusRoute from "./routes/statusRoutes.js"
+import statusRoute from "./routes/status.routes.js"
 
 
 const app = express();
