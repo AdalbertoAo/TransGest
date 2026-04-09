@@ -43,3 +43,4 @@ model FuncionariosToVeiculos {
   @@unique([id_veiculo, tipo_funcionario])
   @@map("funcionariostoveiculo")
 }
+

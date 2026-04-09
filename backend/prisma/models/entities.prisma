@@ -1,3 +1,4 @@
+
 model User {
   id         String       @id @default(uuid()) @db.Char(36)
   user_name  String       @unique
@@ -13,53 +14,69 @@ model User {
 model Aluno {
   id                    Int           @id @default(autoincrement())
   nome                  String
-  data_nascimento       DateTime
   sexo                  Sexo
-  contacto_responsavel  String
+  data_nascimento       DateTime
+  telefone              String?
+  telefone_responsavel  String
+  rota                  String
   turma                 String
   turno                 Periodo
-  rota                  String
-  Bilhete_identificacao String
-  Contrato              String
+  bilhete_identificacao String
+  contrato              String
+  escola_id             Int
   moradas               AlunoMorada[]
-  Pagamentos             Pagamento[]
+  pagamentos            Pagamento[]
+  escola                Escola        @relation(fields: [escola_id], references: [id])
   created_at            DateTime      @default(now())
 
   @@map("alunos")
 }
 
 model Funcionario {
-  id                      Int                 @id @default(autoincrement())
+  id                      Int                      @id @default(autoincrement())
   nome                    String
-  documento_identificacao String
   sexo                    Sexo
   data_nascimento         DateTime
-  carta_conducao          String?             @unique
-  certificado             String
+  telefone                String
   cargo                   Cargo
-  salario                 Int
-  user_id                 String?             @unique
-  user                    User?               @relation("UserFuncionario", fields: [user_id], references: [id])
-  created_at              DateTime            @default(now())
+  certificado             String
+  carta_conducao          String?                  @unique
+  salario                 Decimal
+  documento_identificacao String
+  user_id                 String?                  @unique
+  user                    User?                    @relation("UserFuncionario", fields: [user_id], references: [id])
   moradas                 FuncionarioMorada[]
-  veiculo_atribuido FuncionariosToVeiculos?
-  @@map("funcionarios")
- 
+  veiculo_atribuido       FuncionariosToVeiculos?
+  created_at              DateTime                 @default(now())
 
+  @@map("funcionarios")
 }
 
 model Proprietario {
-  id                   Int                  @id @default(autoincrement())
-  nome                 String
-  sexo                 Sexo
-  data_nascimento      DateTime
-  email                String
-  cordenadas_bancarias String
-  created_at           DateTime             @default(now())
-  veiculos             Veiculo[]
-  moradas              ProprietarioMorada[]
+  id                    Int                  @id @default(autoincrement())
+  nome                  String
+  sexo                  Sexo
+  data_nascimento       DateTime
+  telefone              String
+  email                 String
+  coordenadas_bancarias String
+  moradas               ProprietarioMorada[]
+  veiculos              Veiculo[]
+  created_at            DateTime             @default(now())
 
   @@map("proprietarios")
+}
+
+model Escola {
+  id          Int        @id @default(autoincrement())
+  nome_escola String
+  tipo        TipoEscola
+  telefone    String
+  localizacao String
+  alunos      Aluno[]
+  created_at  DateTime   @default(now())
+
+  @@map("escolas")
 }
 
 model Morada {
@@ -76,60 +93,39 @@ model Morada {
   @@map("moradas")
 }
 
-
 model Veiculo {
-  id              Int           @id @default(autoincrement())
-  marca           String
-  modelo          String
-  placa           String
-  capacidade      Int
-  tipo            Tipo
-  status          StatusVeiculo
-  posse           PosseVeiculo
-  proprietario_id Int?
-  proprietario    Proprietario? @relation(fields: [proprietario_id], references: [id])
-  created_at      DateTime      @default(now())
-   funcionario_atribuido FuncionariosToVeiculos[]
+  id                    Int                      @id @default(autoincrement())
+  marca                 String
+  modelo                String
+  placa                 String
+  tipo                  Tipo
+  capacidade            Int
+  status                StatusVeiculo
+  posse                 PosseVeiculo
+  proprietario_id       Int?
+  proprietario          Proprietario?            @relation(fields: [proprietario_id], references: [id])
+  funcionario_atribuido FuncionariosToVeiculos[]
+  created_at            DateTime                 @default(now())
+
   @@map("veiculos")
- 
 }
 
 model Pagamento {
   id                Int             @id @default(autoincrement())
-  alunoId           Int
-  aluno             Aluno           @relation(fields: [alunoId], references: [id])
-  referencia        DateTime // representa o mês/ano do pagamento
+  aluno_id          Int
+  aluno             Aluno           @relation(fields: [aluno_id], references: [id])
+  referencia        DateTime
   valor_base        Decimal
   multa_aplicada    Decimal?
   valor_total       Decimal
-  metodo_pagamento MeioPagamento
-  comprovante       String // obrigatório
+  metodo_pagamento  MeioPagamento
   numero_referencia Int
-  observacao String
+  comprovante       String
+  observacao        String?
   status            StatusPagamento
   created_at        DateTime        @default(now())
   updated_at        DateTime        @default(now())
 
-  @@unique([alunoId, referencia])
+  @@unique([aluno_id, referencia])
   @@map("pagamentos")
-}
-
-model Telefone {
-  id         Int      @id @default(autoincrement())
-  numero     String
-  dono_id    Int
-  dono_tipo  TipoDono
-  created_at DateTime @default(now())
-
-  @@unique([numero, dono_id, dono_tipo])
-  @@map("telefones")
-}
-
-model Escola {
-  id Int @id @default(autoincrement())
-  nome_escola String
-  tipo TipoEscola
-  localizacao String
-   
-  @@map("escolas")
 }

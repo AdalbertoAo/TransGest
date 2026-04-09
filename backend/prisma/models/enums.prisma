@@ -69,12 +69,6 @@ enum StatusPagamento {
   Estornado
 }
 
-enum TipoDono {
-  ALUNO
-  FUNCIONARIO
-  PROPRIETARIO
-}
-
 enum TipoFuncionarioToVeiculo {
    MOTORISTA
   VIGILANTE
