@@ -17,10 +17,17 @@ describe("All tests for endpoint ./status", ()=>{
 
     test("response to endpoint is true", async ()=>{
         let date = new Date()
-        let formatedDate = ("0"+date.getDate()+"/0"+(date.getMonth() +1 )+"/"+date.getFullYear())
+        let formateDate : String;
+        if (date.getDate() > 9)
+        {
+             formateDate = (date.getDate()+"/0"+(date.getMonth() +1 )+"/"+date.getFullYear())
+        } else{
+             formateDate = ("0"+date.getDate()+"/0"+(date.getMonth() +1 )+"/"+date.getFullYear())
+        }
+            
         const db= {
             database: {
-                "timestamp": formatedDate,
+                "timestamp": formateDate,
                 "status": "ok",
                 "instancias no banco": 1
             }
