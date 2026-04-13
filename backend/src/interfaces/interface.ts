@@ -3,7 +3,14 @@ export interface PgStatResult {
 }
 
 export interface DatabaseStatus {
-    instancias : Number,
-    status: boolean,
+    instancias : number,
+    status:  boolean,
     timestamp: Date
+}
+
+export interface ErrorCostumer {
+    name?: string;
+    message: string;
+    stack?: string;
+    statusCode: number
 }
