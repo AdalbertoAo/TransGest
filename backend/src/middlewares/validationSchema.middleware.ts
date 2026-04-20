@@ -9,12 +9,12 @@ function validatoinHandleSchema(schema: z.ZodType){
         const result = schema.safeParse(req.body)
         if(!result.success)
             {
-            const error = new CustomError(result.error.message, 422)
+            const error = new CustomError(`erro de validacao do zod:${result.error.message}`, 422)
             next(error)
             }else {
                 next();
             }
-
+            return result.success
     };
 }
  
