@@ -15,7 +15,6 @@ axiosClient.interceptors.request.use((request: InternalAxiosRequestConfig) => {
         request.headers.Authorization =  `Bearer ${accessToken}`
         return request
     }
-    
     return request
 })
 
