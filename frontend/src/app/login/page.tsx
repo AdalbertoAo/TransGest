@@ -13,7 +13,7 @@ export default  function Login() {
   const handleSignIn: SubmitHandler<LoginSchema> = async (data) => {
 	try{
 		const result = await authService(data);
-		console.log(result.data.token);
+		console.log(result.data);
 		setRedit(true)
 	} catch (err){
 		console.error("credenciais invalidas")
