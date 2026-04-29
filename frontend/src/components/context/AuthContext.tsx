@@ -1,29 +1,33 @@
+"use client"
+
 import type { LoginSchema } from "@/schemas/login.schema";
 import authService from "@/services/auth.service";
-import { createContext, ReactNode } from "react";
+import { createContext, useEffect, useState } from "react";
 import {setCookie} from "nookies"
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { AuthContextType, AuthProviderProps } from "@/lib/types";
 
-interface AuthContextType {
-    isAuthenticated: boolean
-    signIn: (data: LoginSchema) => Promise<void>
-}
-interface AuthProviderProps {
-    children: ReactNode;
-}
+
 export const AuthContext = createContext({} as AuthContextType)
 
 export function AuthProvider({children}: AuthProviderProps){
-   const isAuthenticated = false
+    const [user, setUser] = useState<LoginSchema | null>(null)
+   const isAuthenticated = !!user
+   const router =  useRouter()
+
 
    async function signIn({user_name, password}:LoginSchema){
-    const result = await authService({user_name, password})
-    const token = result.token
 
+    const result = await authService({user_name, password})
+    const token = result?.data.token
+   
     setCookie(undefined, "transgest.token", token, {
         maxAge: 60 * 60 / 1 // 1 hora ate o cookie expirar 
     })
-    redirect("/dashboard")
+    setUser({user_name, password})
+     console.log(token)
+     router.push("/dashboard")
+    // redirect()
    }
     return (
         <AuthContext.Provider value={{isAuthenticated, signIn}}>

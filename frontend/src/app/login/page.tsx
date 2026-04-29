@@ -1,22 +1,20 @@
 "use client";
 import { LoginSchema } from "@/schemas/login.schema";
-import authService from "@/services/auth.service";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { useRouter } from 'next/navigation'
-import { useState } from "react";
+import { useAuth } from "@/hooks/useAuth";
 
 export default  function Login() {
-	const router =  useRouter()
-	const [redit, setRedit] = useState(false)
+
   const { register, handleSubmit } = useForm<LoginSchema>();
+  const {signIn} = useAuth()
+
 
   const handleSignIn: SubmitHandler<LoginSchema> = async (data) => {
 	try{
-		const result = await authService(data);
-		console.log(result.data);
-		setRedit(true)
+     await signIn(data)
+
 	} catch (err){
-		console.error("credenciais invalidas")
+		console.error("credenciais invalidas", err)
 	}
     
   };
@@ -74,7 +72,6 @@ export default  function Login() {
 
     <button
       type="submit"
-      onClick={redit ? () => router.push('/dashboard') : undefined}
       className={`w-full py-2 px-4 bg-primary text-white font-bold
                             rounded-lg shadow-lg shadow-primary/20 cursor-pointer
                             hover:bg-[#0056d2] transition-all flex items-center
